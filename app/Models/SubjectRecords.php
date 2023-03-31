@@ -22,7 +22,7 @@ class SubjectRecords extends Model
     
     public function questions()
     {
-        return $this->hasMany(QuestionsRecords::class, 'subject');
+        return $this->hasMany(QuestionsRecords::class, 'id');
     }
 
 

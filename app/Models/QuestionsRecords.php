@@ -22,7 +22,7 @@ class QuestionsRecords extends Model
     
     public function subjects()
     {
-        return $this->belongsTo(SubjectRecords::class, 'id');
+        return $this->belongsTo(SubjectRecords::class, 'subject');
     }
 
     public function results()

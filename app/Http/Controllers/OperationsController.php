@@ -52,16 +52,18 @@ class OperationsController extends Controller
     public function getQuestions(Request $request)
     {
 
-
+          $count = QuestionsRecords::where('active',$this->active)->get();
         if (isset($_POST['next'])) {
            
 
 
-               $count = QuestionsRecords::where('active',$this->active)->get();
+             
                //dd($count);
                $questions =  QuestionsRecords::with('subjects')
                             ->where('id','>', $request['question_id'])
                             ->first();
+
+                //dd($questions);            
 
                if (!$questions) 
                {
@@ -93,7 +95,12 @@ class OperationsController extends Controller
         if (isset($_POST['skip'])) {
 
 
-            $questions = $this->eloquentRepository->skipQuestions($request['question_id']);
+            $skipQuestions = $this->eloquentRepository->skipQuestions($request['question_id']);
+            $questions =  QuestionsRecords::with('subjects')
+                            ->where('id','>', $request['question_id'])
+                            ->first();
+
+             return view('questions',compact('questions','count'));
             
         }
 

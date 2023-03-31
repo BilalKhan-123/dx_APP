@@ -69,7 +69,46 @@ class EloquentRepository implements EloquentRepositoryInterface
 
     public function skipQuestions($question_id)
     {
-        dd($question_id);
+       
+
+        
+
+      
+        $getQuestion = QuestionsRecords::find($question_id);
+
+
+    
+       
+
+       
+            $save = StudentsResultsRecords::updateOrCreate(
+            ['question_id' => $question_id],
+            [
+            'std_id'  => (session()->has('id')) ? session()->get('id') : 0,
+            'std_name'  => (session()->has('name')) ? session()->get('name') : 'Robot',
+            'question_id'  => $question_id,
+            'answer'  => 2,
+            'correct_answer'  => $getQuestion->correct_answer,
+            'score'  => 2
+            ]);
+            
+        
+         if ($save) {
+                
+                 return $save;
+        
+
+
+            }
+
+
+       
+
+
+    
+
+
+
     }
 
 

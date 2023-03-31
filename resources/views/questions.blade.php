@@ -53,7 +53,10 @@
                				@if($questions)
                				
                			 	<h5 align="center"><b>Subject: 
+
+                                @if($questions->subjects->title)
                					{{$questions->subjects->title}}
+                                @endif
 							   </b>
 						    </h5> 	
                			
@@ -88,7 +91,7 @@
 
 								  <input id="next" type="submit" value="Next" name="next" class="btn btn-success btn-md" />
 								  <input id="skip" type="submit" value="Skip" name="skip" class="btn btn-danger btn-md" />
-								  <input type="hidden" name="question_id" id="question_id" value="{{$questions->id}}">
+								  <input type="text" name="question_id" id="question_id" value="{{$questions->id}}">
 
                           
 						
