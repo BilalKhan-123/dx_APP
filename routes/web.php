@@ -29,7 +29,9 @@ Route::prefix('mcqs')->group(function () {
 
 
  Route::post('/process ', [OperationsController::class, 'getQuestions'])->name('mcqs.process');
- Route::post('/next ', [OperationsController::class, 'nextQuestions'])->name('mcqs.next');
+ Route::any('/next ', [OperationsController::class, 'nextQuestions'])->name('mcqs.next');
+ Route::any('/skip ', [OperationsController::class, 'skipQuestions'])->name('mcqs.skip');
+
 
 
 

@@ -34,7 +34,7 @@ class EloquentRepository implements EloquentRepositoryInterface
 
        
             $save = StudentsResultsRecords::updateOrCreate(
-            ['question_id' => $request['question_id']],
+            ['question_id' => $request['question_id'],'std_id' => session()->get('id'),'std_name' => session()->get('name')],
             [
             'std_id'  => (session()->has('id')) ? session()->get('id') : 0,
             'std_name'  => (session()->has('name')) ? session()->get('name') : 'Robot',
@@ -82,7 +82,7 @@ class EloquentRepository implements EloquentRepositoryInterface
 
        
             $save = StudentsResultsRecords::updateOrCreate(
-            ['question_id' => $question_id],
+           ['question_id' => $question_id,'std_id' => session()->get('id'),'std_name' => session()->get('name')],
             [
             'std_id'  => (session()->has('id')) ? session()->get('id') : 0,
             'std_name'  => (session()->has('name')) ? session()->get('name') : 'Robot',

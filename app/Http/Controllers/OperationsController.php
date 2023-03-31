@@ -53,15 +53,22 @@ class OperationsController extends Controller
     {
 
           $count = QuestionsRecords::where('active',$this->active)->get();
+             
+
+
         if (isset($_POST['next'])) {
+
+
+
+             $counter = QuestionsRecords::where('id','>', $request['question_id'])->where('active',$this->active)->count(); 
            
 
-
-             
-               //dd($count);
                $questions =  QuestionsRecords::with('subjects')
                             ->where('id','>', $request['question_id'])
                             ->first();
+               
+
+
 
                 //dd($questions);            
 
@@ -87,22 +94,11 @@ class OperationsController extends Controller
 
 
 
-               return view('questions',compact('questions','count'));
+               return view('questions',compact('questions','count','counter'));
 
 
         }
 
-        if (isset($_POST['skip'])) {
-
-
-            $skipQuestions = $this->eloquentRepository->skipQuestions($request['question_id']);
-            $questions =  QuestionsRecords::with('subjects')
-                            ->where('id','>', $request['question_id'])
-                            ->first();
-
-             return view('questions',compact('questions','count'));
-            
-        }
 
 
 
@@ -124,6 +120,7 @@ class OperationsController extends Controller
         $questions = $this->eloquentRepository->getQuestions($request->all());
         //dd($questions);
         $count = QuestionsRecords::where('active',$this->active)->get();
+        $counter = 1;
 
           session([
             'name' => $request->name,
@@ -134,7 +131,7 @@ class OperationsController extends Controller
 
         if ($questions) {
             
-            return view('questions',compact('questions','count'));
+            return view('questions',compact('questions','count','counter'));
 
         }
 
@@ -145,6 +142,30 @@ class OperationsController extends Controller
         }
      }
 
+
+     public function skipQuestions(Request $request)
+     {
+         
+
+
+          $count = QuestionsRecords::where('active',$this->active)->get();
+          $counter = QuestionsRecords::where('id','>', $request['question_id'])->where('active',$this->active)->count(); 
+
+
+        
+
+
+            $skipQuestions = $this->eloquentRepository->skipQuestions($request['question_id']);
+            $questions =  QuestionsRecords::with('subjects')
+                            ->where('id','>', $request['question_id'])
+                            ->first();
+
+             return view('questions',compact('questions','count','counter'));
+            
+        
+
+
+     }
 
      public function nextQuestions(Request $request)
      {

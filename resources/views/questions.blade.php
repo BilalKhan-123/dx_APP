@@ -14,8 +14,8 @@
   <div class="container">
  
 
-    <form action="{{ url('mcqs/process') }}" method="post">
-        @csrf
+    
+        
         <div class="container">
             
             <div class="row">
@@ -25,7 +25,10 @@
 
 
                       <div class="col-md-3"></div> 
+                      <form action="{{ url('mcqs/process') }}" method="post">
+                          @csrf
                       <div class="col-md-6" style="display: block;" id="currentQuestion">
+
                          <div class="form-group">
                				<h5 align="center"><b>Student Name: 
 
@@ -48,7 +51,30 @@
 
                             </b></h5>
 
-               				<h5 align="center"><b>Questions: {{-- {{count($questions)}} --}}/{{count($count)}}</b></h5>
+               				<h5 align="center"><b>Questions: 
+                                @php
+
+                                if($counter != 1) {
+
+                                    $total = count($count);
+
+                                    $counter = $total - $counter;
+                                    echo $counter; 
+
+                                }
+                                else  {
+
+                                    $counter = 1;
+                                }
+
+
+                             
+
+                                @endphp
+
+
+
+                           /{{count($count)}}</b></h5>
 
                				@if($questions)
                				
@@ -67,17 +93,17 @@
 								<ol>
 									<li>
                                         <label for="{{$questions->option1}}" id="option1">
-										<input onclick="return makeAnswer('option1')" type="radio" name="answers" id="{{$questions->option1}}" value="@if($questions->correct_answer == 'option1') {{$questions->correct_answer}} @else 'option1' @endif" /> {{$questions->option1}}
+										<input required onclick="return makeAnswer('option1')" type="radio" name="answers" id="{{$questions->option1}}" value="@if($questions->correct_answer == 'option1') {{$questions->correct_answer}} @else 'option1' @endif" /> {{$questions->option1}}
                                         </label>
 									</li>
 									<li>
 								         <label for="{{$questions->option2}}" id="option2">
-                                        <input onclick="return makeAnswer('option2')" type="radio" name="answers" id="{{$questions->option2}}" value="@if($questions->correct_answer == 'option2') {{$questions->correct_answer}} @else 'option2' @endif" /> {{$questions->option2}}
+                                        <input required onclick="return makeAnswer('option2')" type="radio" name="answers" id="{{$questions->option2}}" value="@if($questions->correct_answer == 'option2') {{$questions->correct_answer}} @else 'option2' @endif" /> {{$questions->option2}}
                                         </label>
 									</li>
 									<li>
 										 <label for="{{$questions->option3}}" id="option3">
-                                        <input onclick="return makeAnswer('option3')" type="radio" name="answers" id="{{$questions->option3}}" value="@if($questions->correct_answer == 'option3') {{$questions->correct_answer}} @else 'option3' @endif" /> {{$questions->option3}}
+                                        <input onclick="return makeAnswer('option3')" type="radio" required name="answers" id="{{$questions->option3}}" value="@if($questions->correct_answer == 'option3') {{$questions->correct_answer}} @else 'option3' @endif" /> {{$questions->option3}}
                                         </label>
 									</li>
 									<li>
@@ -90,8 +116,8 @@
 								</div>
 
 								  <input id="next" type="submit" value="Next" name="next" class="btn btn-success btn-md" />
-								  <input id="skip" type="submit" value="Skip" name="skip" class="btn btn-danger btn-md" />
-								  <input type="text" name="question_id" id="question_id" value="{{$questions->id}}">
+                                   <input type="button" id="skipBtn" value="Skip" name="skip" class="btn btn-danger btn-md" />
+								   <input type="hidden" name="question_id" id="question_id" value="{{$questions->id}}">
 
                           
 						
@@ -104,7 +130,16 @@
                 
                   </div>
 
-            
+                   </form>
+
+                   <form action="{{ url('mcqs/skip') }}" method="POST" id="skipForm">
+                       @csrf
+                       
+                                
+                         <input type="hidden" name="question_id" id="question_id" value="{{$questions->id}}">
+
+
+                   </form>
 
 
                     <div class="col-md-3"></div> 
@@ -112,7 +147,8 @@
             </div>
         </div>
 
-    </form>
+ 
+
   </div>
 </body>
 
@@ -144,16 +180,16 @@
                url:"{{ url('mcqs/next') }}",
                data:{question_id:question_id,answers:answers},
                success:function(data) {
-                  if(data == correct) {
+                  
 
 
 
-                    $('input[type=radio]').attr("disabled",true);
+                   // $('input[type=radio]').attr("disabled",true);
 
 
 
 
-                  }
+                  
 
                   
                }
@@ -162,7 +198,9 @@
 
 
 
-  
+   $("#skipBtn").click(function(){        
+        $("#skipForm").submit(); // Submit the form
+    });
 
 
     </script>
